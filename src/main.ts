@@ -63,3 +63,25 @@ async function getActress(id: number) {
     return null;
   }
 }
+
+async function getAllActresses() {
+  const response = await fetch(`http://localhost:3333/actresses`);
+  if (response.ok) {
+    const answer = await response.json();
+    if (Array.isArray(answer)) {
+      const actressValide = answer.filter((e) => isActress(e));
+      return actressValide;
+    }
+  }
+  return [];
+}
+
+// Test getAllActresses
+getAllActresses().then((actresses) => {
+  console.log("Tutte le attrici:", actresses);
+});
+
+// Test getActress con un ID specifico
+getActress(1).then((actress) => {
+  console.log("Attrice con ID 1:", actress);
+});
