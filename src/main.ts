@@ -50,16 +50,20 @@ function isActress(dati: unknown): dati is Actress {
   return false;
 }
 
-async function getActress(id: number) {
-  const res = await fetch(`http://localhost:3333/actresses/${id}`);
-  if (res.ok) {
-    const dati = await res.json();
-
-    if (isActress(dati)) {
-      return dati;
+async function getActress(id: number): Promise<Actress | null> {
+  try {
+    const response = await fetch(`http://localhost:3333/actresses/${id}`);
+    const dati: unknown = await response.json();
+    if (!isActress(dati)) {
+      throw new Error("formato dei dati non valido");
     }
-    return null;
-  } else {
+    return dati;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("errore durante il recupero");
+    } else {
+      console.error("errore sconosciuto", error);
+    }
     return null;
   }
 }
