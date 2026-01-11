@@ -76,12 +76,12 @@ async function getAllActresses() {
   return [];
 }
 
-// Test getAllActresses
-getAllActresses().then((actresses) => {
-  console.log("Tutte le attrici:", actresses);
-});
+async function getActresses(ids: number[]) {
+  const arrayDiPromise = ids.map((id) => getActress(id));
+  const risultati = await Promise.all(arrayDiPromise);
+  return risultati;
+}
 
-// Test getActress con un ID specifico
-getActress(1).then((actress) => {
-  console.log("Attrice con ID 1:", actress);
+getActresses([1, 2, 3]).then((risultati) => {
+  console.log("Risultati:", risultati);
 });
